@@ -72,6 +72,12 @@ static const char* foot_position_controller_spec[] =
 	"conf.default.dir_rf0", "1",
 	"conf.default.dir_rf1", "1",
 	"conf.default.dir_rf2", "1",
+	"conf.default.upper_limit_motor0", "1.571796",
+	"conf.default.upper_limit_motor1", "1.571796",
+	"conf.default.upper_limit_motor2", "1.571796",
+	"conf.default.lower_limit_motor0", "-1.571796",
+	"conf.default.lower_limit_motor1", "-1.571796",
+	"conf.default.lower_limit_motor2", "-1.571796",
 
 	// Widget
 	"conf.__widget__.offset_lf0", "text",
@@ -114,6 +120,12 @@ static const char* foot_position_controller_spec[] =
 	"conf.__widget__.dir_rf0", "radio",
 	"conf.__widget__.dir_rf1", "radio",
 	"conf.__widget__.dir_rf2", "radio",
+	"conf.__widget__.upper_limit_motor0", "text",
+	"conf.__widget__.upper_limit_motor1", "text",
+	"conf.__widget__.upper_limit_motor2", "text",
+	"conf.__widget__.lower_limit_motor0", "text",
+	"conf.__widget__.lower_limit_motor1", "text",
+	"conf.__widget__.lower_limit_motor2", "text",
 	// Constraints
 	"conf.__constraints__.dir_lf0", "(1,-1)",
 	"conf.__constraints__.dir_lf1", "(1,-1)",
@@ -168,6 +180,12 @@ static const char* foot_position_controller_spec[] =
 	"conf.__type__.dir_rf0", "int",
 	"conf.__type__.dir_rf1", "int",
 	"conf.__type__.dir_rf2", "int",
+	"conf.__type__.upper_limit_motor0", "double",
+	"conf.__type__.upper_limit_motor1", "double",
+	"conf.__type__.upper_limit_motor2", "double",
+	"conf.__type__.lower_limit_motor0", "double",
+	"conf.__type__.lower_limit_motor1", "double",
+	"conf.__type__.lower_limit_motor2", "double",
 
     ""
   };
@@ -268,6 +286,12 @@ RTC::ReturnCode_t Foot_Position_Controller::onInitialize()
   bindParameter("dir_rf0", m_dir_rf0, "1");
   bindParameter("dir_rf1", m_dir_rf1, "1");
   bindParameter("dir_rf2", m_dir_rf2, "1");
+  bindParameter("upper_limit_motor0", m_upper_limit_motor0, "1.571796");
+  bindParameter("upper_limit_motor1", m_upper_limit_motor1, "1.571796");
+  bindParameter("upper_limit_motor2", m_upper_limit_motor2, "1.571796");
+  bindParameter("lower_limit_motor0", m_lower_limit_motor0, "-1.571796");
+  bindParameter("lower_limit_motor1", m_lower_limit_motor1, "-1.571796");
+  bindParameter("lower_limit_motor2", m_lower_limit_motor2, "-1.571796");
   // </rtc-template>
   
   return RTC::RTC_OK;
@@ -306,6 +330,8 @@ RTC::ReturnCode_t Foot_Position_Controller::onActivated(RTC::UniqueId ec_id)
 	robot.setLink2Param(Vector3d(m_leg2_length, 0.01, 0.01), Vector3d(m_leg2_offset_x, m_leg2_offset_y, m_leg2_offset_z), 0.01);
 	robot.setPose();
 
+	robot.setMotorLimit(m_upper_limit_motor0, m_upper_limit_motor1, m_upper_limit_motor2, m_lower_limit_motor0, m_lower_limit_motor1, m_lower_limit_motor2);
+
   return RTC::RTC_OK;
 }
 
@@ -334,20 +360,41 @@ RTC::ReturnCode_t Foot_Position_Controller::onExecute(RTC::UniqueId ec_id)
 		std::vector<double> angle_lb = robot.inverseKinematics(pos_lb, 1);
 		std::vector<double> angle_rb = robot.inverseKinematics(pos_rb, 2);
 		std::vector<double> angle_rf = robot.inverseKinematics(pos_rf, 3);
+		bool ret = robot.limitOver(angle_lf, angle_lb, angle_rb, angle_rf);
+		if (ret)
+		{
+			return RTC::RTC_ERROR;
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			std::cout << "lf\t" << i << "\t" << angle_lf[i] << std::endl;
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			std::cout << "lf\t" << i << "\t" << angle_lb[i] << std::endl;
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			std::cout << "lf\t" << i << "\t" << angle_rb[i] << std::endl;
+		}
+		for (int i = 0; i < 3; i++)
+		{
+			std::cout << "lf\t" << i << "\t" << angle_rf[i] << std::endl;
+		}
 
 		//m_motor_pos.data.length(3);
-		m_motor_pos.data[0] = ((double)m_dir_lf0)*(angle_lf[0] - M_PI / 2.0 + m_offset_lf0);
-		m_motor_pos.data[1] = ((double)m_dir_lf1)*(angle_lf[1] - M_PI / 2.0 + m_offset_lf1);
-		m_motor_pos.data[2] = ((double)m_dir_lf2)*(angle_lf[2] - M_PI / 2.0 + m_offset_lf2);
-		m_motor_pos.data[3] = ((double)m_dir_lb0)*(angle_lb[0] - M_PI / 2.0 + m_offset_lb0);
-		m_motor_pos.data[4] = ((double)m_dir_lb1)*(angle_lb[1] - M_PI / 2.0 + m_offset_lb1);
-		m_motor_pos.data[5] = ((double)m_dir_lb2)*(angle_lb[2] - M_PI / 2.0 + m_offset_lb2);
-		m_motor_pos.data[6] = ((double)m_dir_rb0)*(angle_rb[0] + M_PI / 2.0 + m_offset_rb0);
-		m_motor_pos.data[7] = ((double)m_dir_rb1)*(angle_rb[1] - M_PI / 2.0 + m_offset_rb1);
-		m_motor_pos.data[8] = ((double)m_dir_rb2)*(angle_rb[2] - M_PI / 2.0 + m_offset_rb2);
-		m_motor_pos.data[9] = ((double)m_dir_rf0)*(angle_rf[0] + M_PI / 2.0 + m_offset_rf0);
-		m_motor_pos.data[10] = ((double)m_dir_rf1)*(angle_rf[1] - M_PI / 2.0 + m_offset_rf1);
-		m_motor_pos.data[11] = ((double)m_dir_rf2)*(angle_rf[2] - M_PI / 2.0 + m_offset_rf2);
+		m_motor_pos.data[0] = ((double)m_dir_lf0)*(angle_lf[0] + m_offset_lf0);
+		m_motor_pos.data[1] = ((double)m_dir_lf1)*(angle_lf[1] + m_offset_lf1);
+		m_motor_pos.data[2] = ((double)m_dir_lf2)*(angle_lf[2] + m_offset_lf2);
+		m_motor_pos.data[3] = ((double)m_dir_lb0)*(angle_lb[0] + m_offset_lb0);
+		m_motor_pos.data[4] = ((double)m_dir_lb1)*(angle_lb[1] + m_offset_lb1);
+		m_motor_pos.data[5] = ((double)m_dir_lb2)*(angle_lb[2] + m_offset_lb2);
+		m_motor_pos.data[6] = ((double)m_dir_rb0)*(angle_rb[0] + m_offset_rb0);
+		m_motor_pos.data[7] = ((double)m_dir_rb1)*(angle_rb[1] + m_offset_rb1);
+		m_motor_pos.data[8] = ((double)m_dir_rb2)*(angle_rb[2] + m_offset_rb2);
+		m_motor_pos.data[9] = ((double)m_dir_rf0)*(angle_rf[0] + m_offset_rf0);
+		m_motor_pos.data[10] = ((double)m_dir_rf1)*(angle_rf[1] + m_offset_rf1);
+		m_motor_pos.data[11] = ((double)m_dir_rf2)*(angle_rf[2] + m_offset_rf2);
 
 		m_motor_pos_0.data[0] = m_motor_pos.data[0];
 		m_motor_pos_0.data[1] = m_motor_pos.data[1];

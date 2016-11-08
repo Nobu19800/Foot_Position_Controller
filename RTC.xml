@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <rtc:RtcProfile rtc:version="0.2" rtc:id="RTC:AIST:Controller:Foot_Position_Controller:1.0.0" xmlns:rtcExt="http://www.openrtp.org/namespaces/rtc_ext" xmlns:rtcDoc="http://www.openrtp.org/namespaces/rtc_doc" xmlns:rtc="http://www.openrtp.org/namespaces/rtc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <rtc:BasicInfo xsi:type="rtcExt:basic_info_ext" rtcExt:saveProject="Foot_Position_Controller" rtc:updateDate="2016-09-21T14:06:14.971+09:00" rtc:creationDate="2016-06-27T17:12:09+09:00" rtc:abstract="四足歩行ロボットの足先位置制御コンポーネント" rtc:version="1.0.0" rtc:vendor="AIST" rtc:maxInstances="1" rtc:executionType="PeriodicExecutionContext" rtc:executionRate="1000.0" rtc:description="Control the position of the foot" rtc:category="Controller" rtc:componentKind="DataFlowComponent" rtc:activityType="PERIODIC" rtc:componentType="STATIC" rtc:name="Foot_Position_Controller">
+    <rtc:BasicInfo xsi:type="rtcExt:basic_info_ext" rtcExt:saveProject="Foot_Position_Controller" rtc:updateDate="2016-11-08T12:15:49.713+09:00" rtc:creationDate="2016-06-27T17:12:09+09:00" rtc:abstract="四足歩行ロボットの足先位置制御コンポーネント" rtc:version="1.0.0" rtc:vendor="AIST" rtc:maxInstances="1" rtc:executionType="PeriodicExecutionContext" rtc:executionRate="1000.0" rtc:description="Control the position of the foot" rtc:category="Controller" rtc:componentKind="DataFlowComponent" rtc:activityType="PERIODIC" rtc:componentType="STATIC" rtc:name="Foot_Position_Controller">
         <rtcDoc:Doc rtcDoc:reference="" rtcDoc:license="" rtcDoc:creator="宮本　信彦　n-miyamoto@aist.go.jp&lt;br/&gt;産業技術総合研究所　ロボットイノベーション研究センター&lt;br/&gt;ロボットソフトウエアプラットフォーム研究チーム" rtcDoc:algorithm="" rtcDoc:inout="" rtcDoc:description=""/>
         <rtcExt:VersionUpLogs></rtcExt:VersionUpLogs>
         <rtcExt:VersionUpLogs></rtcExt:VersionUpLogs>
@@ -423,6 +423,30 @@
             </rtc:Constraint>
             <rtcDoc:Doc rtcDoc:constraint="(1,-1)" rtcDoc:range="" rtcDoc:unit="" rtcDoc:description="RCサーボの回転方向(右前2番目)" rtcDoc:defaultValue="1" rtcDoc:dataname="dir_rf2"/>
             <rtcExt:Properties rtcExt:value="radio" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="rad" rtc:defaultValue="1.571796" rtc:type="double" rtc:name="upper_limit_motor0">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="rad" rtcDoc:description="関節0の角度限界値上限" rtcDoc:defaultValue="1.571796" rtcDoc:dataname="upper_limit_motor0"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="rad" rtc:defaultValue="1.571796" rtc:type="double" rtc:name="upper_limit_motor1">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="rad" rtcDoc:description="関節1の角度限界値上限" rtcDoc:defaultValue="1.571796" rtcDoc:dataname="upper_limit_motor1"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="rad" rtc:defaultValue="1.571796" rtc:type="double" rtc:name="upper_limit_motor2">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="rad" rtcDoc:description="関節2の角度限界値上限" rtcDoc:defaultValue="1.571796" rtcDoc:dataname="upper_limit_motor2"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="rad" rtc:defaultValue="-1.571796" rtc:type="double" rtc:name="lower_limit_motor0">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="rad" rtcDoc:description="関節0の角度限界値下限" rtcDoc:defaultValue="-1.571796" rtcDoc:dataname="lower_limit_motor0"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="rad" rtc:defaultValue="-1.571796" rtc:type="double" rtc:name="lower_limit_motor1">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="rad" rtcDoc:description="関節1の角度限界値下限" rtcDoc:defaultValue="-1.571796" rtcDoc:dataname="lower_limit_motor1"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
+        </rtc:Configuration>
+        <rtc:Configuration xsi:type="rtcExt:configuration_ext" rtcExt:variableName="" rtc:unit="rad" rtc:defaultValue="-1.571796" rtc:type="double" rtc:name="lower_limit_motor2">
+            <rtcDoc:Doc rtcDoc:constraint="" rtcDoc:range="" rtcDoc:unit="rad" rtcDoc:description="関節2の角度限界値下限" rtcDoc:defaultValue="-1.571796" rtcDoc:dataname="lower_limit_motor2"/>
+            <rtcExt:Properties rtcExt:value="text" rtcExt:name="__widget__"/>
         </rtc:Configuration>
     </rtc:ConfigurationSet>
     <rtc:DataPorts xsi:type="rtcExt:dataport_ext" rtcExt:position="LEFT" rtcExt:variableName="" rtc:unit="" rtc:subscriptionType="" rtc:dataflowType="" rtc:interfaceType="" rtc:idlFile="" rtc:type="RTC::LeggedRobot" rtc:name="Trajectory" rtc:portType="DataInPort">
