@@ -518,7 +518,48 @@ class Foot_Position_Controller
   * - Constraint: (1,-1)
   */
   int m_dir_rf2;
-
+  /*!
+  * 関節0の角度限界値上限
+  * - Name: upper_limit_motor0 upper_limit_motor0
+  * - DefaultValue: 1.571796
+  * - Unit: rad
+  */
+  double m_upper_limit_motor0;
+  /*!
+  * 関節1の角度限界値上限
+  * - Name: upper_limit_motor1 upper_limit_motor1
+  * - DefaultValue: 1.571796
+  * - Unit: rad
+  */
+  double m_upper_limit_motor1;
+  /*!
+  * 関節2の角度限界値上限
+  * - Name: upper_limit_motor2 upper_limit_motor2
+  * - DefaultValue: 1.571796
+  * - Unit: rad
+  */
+  double m_upper_limit_motor2;
+  /*!
+  * 関節0の角度限界値下限
+  * - Name: lower_limit_motor0 lower_limit_motor0
+  * - DefaultValue: -1.571796
+  * - Unit: rad
+  */
+  double m_lower_limit_motor0;
+  /*!
+  * 関節1の角度限界値下限
+  * - Name: lower_limit_motor1 lower_limit_motor1
+  * - DefaultValue: -1.571796
+  * - Unit: rad
+  */
+  double m_lower_limit_motor1;
+  /*!
+  * 関節2の角度限界値下限
+  * - Name: lower_limit_motor2 lower_limit_motor2
+  * - DefaultValue: -1.571796
+  * - Unit: rad
+  */
+  double m_lower_limit_motor2;
   // DataInPort declaration
   // <rtc-template block="inport_declare">
   RTC::LeggedRobot m_Trajectory;
@@ -533,14 +574,14 @@ class Foot_Position_Controller
 
   // DataOutPort declaration
   // <rtc-template block="outport_declare">
-  RTC::TimedFloatSeq m_motor_pos;
+  RTC::TimedDoubleSeq m_motor_pos;
   /*!
    * RCサーボの角度
    * - Type: RTC::TimedDoubleSeq
    * - Number: 12
    * - Unit: rad
    */
-  OutPort<RTC::TimedFloatSeq> m_motor_posOut;
+  OutPort<RTC::TimedDoubleSeq> m_motor_posOut;
   RTC::TimedDoubleSeq m_motor_pos_0;
   /*!
   * 脚0のRCサーボの角度
