@@ -1,4 +1,5 @@
 set(hdrs Foot_Position_Controller.h
+	LeggedRobotSVC_impl.h
     PARENT_SCOPE
     )
 

@@ -203,7 +203,10 @@ Foot_Position_Controller::Foot_Position_Controller(RTC::Manager* manager)
 	m_motor_pos_0Out("motor_pos_0", m_motor_pos_0),
 	m_motor_pos_1Out("motor_pos_1", m_motor_pos_1),
 	m_motor_pos_2Out("motor_pos_2", m_motor_pos_2),
-	m_motor_pos_3Out("motor_pos_3", m_motor_pos_3)
+	m_motor_pos_3Out("motor_pos_3", m_motor_pos_3),
+	m_LeggedRobotCommonInterface_Servo_1Port("LeggedRobotCommonInterface_Servo_1"),
+	m_LeggedRobotCommonInterface_RobotPort("LeggedRobotCommonInterface_Robot"),
+	m_LeggedRobotCommonInterface_Servo_2Port("LeggedRobotCommonInterface_Servo_2")
 
     // </rtc-template>
 {
@@ -228,19 +231,25 @@ RTC::ReturnCode_t Foot_Position_Controller::onInitialize()
 
   // Set OutPort buffer
   addOutPort("motor_pos", m_motor_posOut);
-  addOutPort("motor_pos_0", m_motor_pos_0Out);
-  addOutPort("motor_pos_1", m_motor_pos_1Out);
-  addOutPort("motor_pos_2", m_motor_pos_2Out);
-  addOutPort("motor_pos_3", m_motor_pos_3Out);
+  //addOutPort("motor_pos_0", m_motor_pos_0Out);
+  //addOutPort("motor_pos_1", m_motor_pos_1Out);
+  //addOutPort("motor_pos_2", m_motor_pos_2Out);
+  //addOutPort("motor_pos_3", m_motor_pos_3Out);
  
   
 
   
   // Set service provider to Ports
-  
+  m_LeggedRobotCommonInterface_Servo_1Port.registerProvider("LeggedRobotCommonInterface_Servo", "RTC::LeggedRobotCommonInterface_Servo", m_LeggedRobotCommonInterface_Servo_1);
+  m_LeggedRobotCommonInterface_RobotPort.registerProvider("LeggedRobotCommonInterface_Robot", "RTC::LeggedRobotCommonInterface_Robot", m_LeggedRobotCommonInterface_Robot);
+
   // Set service consumers to Ports
-  
+  m_LeggedRobotCommonInterface_Servo_2Port.registerConsumer("LeggedRobotCommonInterface_Servo", "RTC::LeggedRobotCommonInterface_Servo", m_LeggedRobotCommonInterface_Servo_2);
+
   // Set CORBA Service Ports
+  addPort(m_LeggedRobotCommonInterface_Servo_1Port);
+  addPort(m_LeggedRobotCommonInterface_RobotPort);
+  addPort(m_LeggedRobotCommonInterface_Servo_2Port);
   
   // </rtc-template>
 
@@ -365,7 +374,8 @@ RTC::ReturnCode_t Foot_Position_Controller::onExecute(RTC::UniqueId ec_id)
 		{
 			return RTC::RTC_ERROR;
 		}
-		for (int i = 0; i < 3; i++)
+		//std::cout << ret << std::endl;
+		/*for (int i = 0; i < 3; i++)
 		{
 			std::cout << "lf\t" << i << "\t" << angle_lf[i] << std::endl;
 		}
@@ -380,7 +390,7 @@ RTC::ReturnCode_t Foot_Position_Controller::onExecute(RTC::UniqueId ec_id)
 		for (int i = 0; i < 3; i++)
 		{
 			std::cout << "lf\t" << i << "\t" << angle_rf[i] << std::endl;
-		}
+		}*/
 
 		//m_motor_pos.data.length(3);
 		m_motor_pos.data[0] = ((double)m_dir_lf0)*(angle_lf[0] + m_offset_lf0);

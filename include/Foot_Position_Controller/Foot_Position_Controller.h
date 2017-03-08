@@ -18,15 +18,17 @@
 #include <rtm/idl/ExtendedDataTypesSkel.h>
 #include <rtm/idl/InterfaceDataTypesSkel.h>
 
-#include "LeggedRobotStub.h"
+
 
 // Service implementation headers
 // <rtc-template block="service_impl_h">
+#include "LeggedRobotSVC_impl.h"
 
 // </rtc-template>
 
 // Service Consumer stub headers
 // <rtc-template block="consumer_stub_h">
+#include "LeggedRobotStub.h"
 
 // </rtc-template>
 
@@ -562,12 +564,12 @@ class Foot_Position_Controller
   double m_lower_limit_motor2;
   // DataInPort declaration
   // <rtc-template block="inport_declare">
-  RTC::LeggedRobot m_Trajectory;
+  WalkingRobot::LeggedRobot m_Trajectory;
   /*!
    * 足先軌道
    * - Type: RTC::LeggedRobot
    */
-  InPort<RTC::LeggedRobot> m_TrajectoryIn;
+  InPort<WalkingRobot::LeggedRobot> m_TrajectoryIn;
   
   // </rtc-template>
 
@@ -624,11 +626,40 @@ class Foot_Position_Controller
 
   // Service declaration
   // <rtc-template block="service_declare">
-  
+  /*!
+  * サーボ操作コマンド
+  */
+  RTC::CorbaPort m_LeggedRobotCommonInterface_Servo_1Port;
+  /*!
+  * ロボット操作コマンド
+  */
+  RTC::CorbaPort m_LeggedRobotCommonInterface_RobotPort;
+  /*!
+  * サーボ操作コマンド
+  */
+  RTC::CorbaPort m_LeggedRobotCommonInterface_Servo_2Port;
+
+  // </rtc-template>
+
+  // Service declaration
+  // <rtc-template block="service_declare">
+  /*!
+  * サーボ操作コマンド
+  */
+  WalkingRobot_LeggedRobotCommonInterface_ServoSVC_impl m_LeggedRobotCommonInterface_Servo_1;
+  /*!
+  * ロボット操作コマンド
+  */
+  WalkingRobot_LeggedRobotCommonInterface_RobotSVC_impl m_LeggedRobotCommonInterface_Robot;
+
   // </rtc-template>
 
   // Consumer declaration
   // <rtc-template block="consumer_declare">
+  /*!
+  * サーボ操作コマンド
+  */
+  RTC::CorbaConsumer<WalkingRobot::LeggedRobotCommonInterface_Servo> m_LeggedRobotCommonInterface_Servo_2;
   
   // </rtc-template>
 
